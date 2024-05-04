@@ -8,17 +8,16 @@ import java.util.Date;
 public class AccountTransaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long clientId;
-
-    private String clientName;
 
     private String accountNumber;
 
     private Date date;
 
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
     private double value;
@@ -81,20 +80,13 @@ public class AccountTransaction {
         this.clientId = clientId;
     }
 
-    public String getClientName() {
-        return clientName;
-    }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
 
     @Override
     public String toString() {
         return "AccountTransaction{" +
                 "id=" + id +
                 ", clientId=" + clientId +
-                ", clientName='" + clientName + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", date=" + date +
                 ", transactionType=" + transactionType +

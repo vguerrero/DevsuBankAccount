@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long clientId;
@@ -15,7 +15,9 @@ public class Account {
     @Column(unique = true)
     private String number;
 
+    @Enumerated(EnumType.STRING)
     private AccountType type;
+
     private double balance;
     private boolean state;
 

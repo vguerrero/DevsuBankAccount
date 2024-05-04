@@ -2,6 +2,7 @@ package com.bank.account.BankAccount.service;
 
 import com.bank.account.BankAccount.model.Account;
 import com.bank.account.BankAccount.model.AccountTransaction;
+import com.bank.account.BankAccount.model.TransactionReportDTO;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface AccountTransactionService {
     void deleteAccountTransaction (long accTransactionId);
     AccountTransaction updateAccountTransaction (AccountTransaction c);
     List<AccountTransaction> getAll();
+    public List<TransactionReportDTO> getTransactionReport(long clientId, String dateRange);
 }
