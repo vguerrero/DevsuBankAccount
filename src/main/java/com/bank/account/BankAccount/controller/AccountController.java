@@ -22,7 +22,7 @@ public class AccountController {
     AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<?> createAccount(@RequestBody Account account)  {
+    public ResponseEntity<?> createAccount(@RequestBody Account account) throws Exception {
         return new ResponseEntity<>(accountService.createAccount(account), HttpStatus.CREATED);
     }
 
