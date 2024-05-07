@@ -77,7 +77,8 @@ public class TransactionReportDTO {
         this.accountType = accountType;
     }
 
-    public TransactionReportDTO(String clientName, String accountNumber, Date date, String transactionType, double value, double balance) {
+    public TransactionReportDTO(AccountType accountType, String clientName, String accountNumber, Date date, String transactionType, double value, double balance) {
+        this.accountType=accountType;
         this.clientName = clientName;
         this.accountNumber = accountNumber;
         this.date = date;

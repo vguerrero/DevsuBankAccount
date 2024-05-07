@@ -47,6 +47,7 @@ public class AccountServiceImpl implements AccountService{
             at.setValue(c.getInitialBalance());
             at.setBalance(c.getInitialBalance());
             at.setClientId(c.getClientId());
+            at.setAccountNumber(c.getNumber());
             at.setDate(new Date());
             this.accountTransactionRepository.save(at);
         }

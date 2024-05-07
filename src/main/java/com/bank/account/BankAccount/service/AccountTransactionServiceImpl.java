@@ -44,6 +44,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 
                 double newBalance;
                 at.setValue(Math.abs(at.getValue()));
+
                 if (at.getTransactionType().equals(TransactionType.RETIRO)) {
                     //validate account balance
                     if (account.getBalance() <= at.getValue()) {
@@ -108,7 +109,8 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
                 var accountTransactions = accountTransactionRepository.findAccountTransactionsByClientId(clientId, fromDate, toDate);
                 result = accountTransactions.stream().map(x ->
                         {
-                            return new TransactionReportDTO(clientName, x.getAccountNumber(), x.getDate(), x.getTransactionType().name(), x.getValue(), x.getBalance());
+                            var account = accountService.getAccount(x.getAccountNumber());
+                            return new TransactionReportDTO(account.getType(), clientName, x.getAccountNumber(), x.getDate(), x.getTransactionType().name(), x.getValue(), x.getBalance());
                         }
                 ).collect(Collectors.toList());
             }
