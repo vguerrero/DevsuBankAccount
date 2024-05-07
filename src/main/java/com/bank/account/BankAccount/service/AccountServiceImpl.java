@@ -1,15 +1,19 @@
 package com.bank.account.BankAccount.service;
 
 import com.bank.account.BankAccount.model.Account;
+import com.bank.account.BankAccount.model.AccountTransaction;
+import com.bank.account.BankAccount.model.TransactionType;
 import com.bank.account.BankAccount.repository.AccountRepository;
 import com.bank.account.BankAccount.repository.AccountTransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService{
 
     AccountRepository accountRepository;
@@ -31,7 +35,21 @@ public class AccountServiceImpl implements AccountService{
                 throw new Exception("the account already exist");
             }
         }
-       return accountRepository.save(c);
+        createAccountTransactionDeposit(c);
+        c.setBalance(c.getInitialBalance());
+        return accountRepository.save(c);
+    }
+
+    private void createAccountTransactionDeposit(Account c) {
+        if(c.getInitialBalance()>0){
+            AccountTransaction at = new AccountTransaction();
+            at.setTransactionType(TransactionType.DEPOSITO);
+            at.setValue(c.getInitialBalance());
+            at.setBalance(c.getInitialBalance());
+            at.setClientId(c.getClientId());
+            at.setDate(new Date());
+            this.accountTransactionRepository.save(at);
+        }
     }
 
     @Override

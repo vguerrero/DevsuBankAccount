@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,15 +21,18 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 
     private static final Logger logger = LoggerFactory.getLogger(AccountTransactionServiceImpl.class);
 
-    @Autowired
     AccountService accountService;
 
-    @Autowired
-    private AccountTransactionRepository accountTransactionRepository;
+    AccountTransactionRepository accountTransactionRepository;
 
     @Autowired
     private RestTemplate restTemplate;
 
+
+    public AccountTransactionServiceImpl(AccountService accountService, AccountTransactionRepository accountTransactionRepository) {
+        this.accountService = accountService;
+        this.accountTransactionRepository = accountTransactionRepository;
+    }
 
     @Override
     public AccountTransaction createAccountTransaction(AccountTransaction at) throws Exception {
@@ -86,7 +92,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
      * @return
      */
     @Override
-    public List<TransactionReportDTO> getTransactionReport(long clientId, String dateRange) {
+    public List<TransactionReportDTO> getTransactionReport(long clientId, String from, String to) {
         List<TransactionReportDTO> result = new ArrayList<>();
         try {
             logger.info("getTransactionReport: " + clientId);
@@ -95,8 +101,11 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
             String clientName = restTemplate.getForObject(
                     "http://bankclient-app-1:8081/clientes/namebyid?id={id}", String.class, map);
             logger.info("getTransactionReport clientname: " + clientName);
-            if (clientName != null && !clientName.isEmpty()) {
-                var accountTransactions = accountTransactionRepository.findAccountTransactionsByClientId(clientId);
+            if (clientName != null && !clientName.isEmpty() && !from.isEmpty() && !to.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date fromDate = sdf.parse(from);
+                Date toDate = sdf.parse(to);
+                var accountTransactions = accountTransactionRepository.findAccountTransactionsByClientId(clientId, fromDate, toDate);
                 result = accountTransactions.stream().map(x ->
                         {
                             return new TransactionReportDTO(clientName, x.getAccountNumber(), x.getDate(), x.getTransactionType().name(), x.getValue(), x.getBalance());
@@ -106,6 +115,9 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 
         } catch (HttpClientErrorException e) {
              logger.error("Client doesn't exist");
+        } catch (ParseException e) {
+            logger.error("DateFormat error when getTransactionReport.");
+            throw new RuntimeException(e);
         }
         return result;
     }

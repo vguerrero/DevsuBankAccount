@@ -18,6 +18,8 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountType type;
 
+    private double initialBalance;
+
     private double balance;
     private boolean state;
 
@@ -69,12 +71,22 @@ public class Account {
         this.clientId = clientId;
     }
 
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void setInitialBalance(double initialBalance) {
+        this.initialBalance = initialBalance;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
+                ", clientId=" + clientId +
                 ", number='" + number + '\'' +
                 ", type=" + type +
+                ", initialBalance=" + initialBalance +
                 ", balance=" + balance +
                 ", state=" + state +
                 '}';

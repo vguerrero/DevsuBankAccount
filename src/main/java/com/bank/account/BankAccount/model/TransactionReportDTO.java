@@ -15,6 +15,8 @@ public class TransactionReportDTO {
 
     private String transactionType;
 
+    private AccountType accountType;
+
     private double value;
 
     private double balance;
@@ -65,6 +67,14 @@ public class TransactionReportDTO {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     public TransactionReportDTO(String clientName, String accountNumber, Date date, String transactionType, double value, double balance) {

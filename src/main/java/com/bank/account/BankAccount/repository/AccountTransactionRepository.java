@@ -7,13 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface AccountTransactionRepository extends JpaRepository<AccountTransaction, Long> {
 
-    @Query( "select o from AccountTransaction o where clientId in :clientid" )
-    List<AccountTransaction> findAccountTransactionsByClientId(@Param("clientid") Long clientId);
+    @Query( "select o from AccountTransaction o where clientId in :clientid and date >= :from and date <= :to" )
+    List<AccountTransaction> findAccountTransactionsByClientId(@Param("clientid") Long clientId, @Param("from") Date from, @Param("to") Date to);
 
     Long deleteByClientId(Long clientId);
 }

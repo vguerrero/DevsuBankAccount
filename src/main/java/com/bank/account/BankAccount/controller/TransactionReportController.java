@@ -21,8 +21,8 @@ public class TransactionReportController {
     AccountTransactionService accountTransactionService;
 
     @GetMapping
-    public ResponseEntity<List<TransactionReportDTO>> getReport(@RequestParam long clientId, @RequestParam String dateRange) {
-        return new ResponseEntity<>(accountTransactionService.getTransactionReport(clientId, dateRange), HttpStatus.OK);
+    public ResponseEntity<List<TransactionReportDTO>> getReport(@RequestParam long clientId, @RequestParam String from,@RequestParam String to) {
+        return new ResponseEntity<>(accountTransactionService.getTransactionReport(clientId, from, to), HttpStatus.OK);
     }
 
 }

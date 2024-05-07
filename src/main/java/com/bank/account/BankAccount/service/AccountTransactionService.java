@@ -12,5 +12,5 @@ public interface AccountTransactionService {
     void deleteAccountTransaction (long accTransactionId);
     AccountTransaction updateAccountTransaction (AccountTransaction c);
     List<AccountTransaction> getAll();
-    public List<TransactionReportDTO> getTransactionReport(long clientId, String dateRange);
+    public List<TransactionReportDTO> getTransactionReport(long clientId, String from, String to);
 }
