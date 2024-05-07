@@ -26,3 +26,7 @@ sube nuestras imagenes a docker
 
 **docker-compose up**
 
+evidencia de funcionamiento:
+
+![img.png](img.png)
+
